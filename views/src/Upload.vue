@@ -6,33 +6,29 @@
         <md-icon>menu</md-icon>
       </md-button>
 
-      <h2 class="md-title" style="flex: 1">Default</h2>
+      <h2 class="md-title" style="flex: 1">WeddingShare</h2>
 
       <md-button class="md-icon-button">
         <md-icon>favorite</md-icon>
       </md-button>
     </md-toolbar>
 
-    <div class="notification is-success" v-show="done">
-      <button class="delete is-large" @click="removeAll()"></button>
-      tutti i file sono stati caricati!
-    </div>
-    <div class="notification" v-show="queued > 0 && !done || processing">
-      <div class="level">
-        <div class="level-left">
-          <p class="content">
-            <strong>{{queued}}</strong> foto sono pronte per essere inviate
-          </p>
-        </div>
-        <div class="level-right">
-          <button class="button is-outlined is-success" @click="send()">
-            <i class="fa fa-send"></i>&nbsp;invia</button>
-        </div>
-      </div>
-      <div class="level" v-show="processing">
-        <progress class="progress is-success" :value="progress" max="100">{{progress}}</progress>
-      </div>
-    </div>
+    <md-dialog-alert
+      md-content="tutti i file sono stati caricati!"
+        ref="done">
+  </md-dialog-alert>
+
+    <md-list v-show="queued > 0 && !done || processing">
+      <md-list-item>
+          <span><strong>{{queued}}</strong> foto sono pronte per essere inviate</span>
+        <md-button @click="send()" class="md-raised md-primary"><md-icon>send</md-icon> invia</md-button>
+      </md-list-item>
+    </md-list>
+
+
+    <md-whiteframe>
+      <md-progress v-show="processing" :md-progress="progress"></md-progress>
+    </md-whiteframe>
 
     <dropzone ref="drop" :language="language" :maxNumberOfFiles="10" :autoProcessQueue="false" v-on:vdropzone-total-upload-progress="updateProgress($event, progress)" v-on:vdropzone-files-added="updateQueue()" v-on:vdropzone-queue-complete="showSuccess()" :useCustomDropzoneOptions="true" :dropzoneOptions="options" id="weddingShare" :url="url" :maxFileSizeInMB="5" :useFontAwesome=true v-on:vdropzone-success="showSuccess">
 
@@ -41,7 +37,7 @@
 
     <md-button class="md-fab add-files md-fab-bottom-right" title="aggiungi le tue foto!" @click="resetDone()">
       <md-icon>
-        <i class="fa fa-plus"></i>
+        add
       </md-icon>
     </md-button>
   </div>
@@ -123,17 +119,21 @@ export default {
         this.queued = 0;
       }
     },
+  },
+  watch: {
+    'done' : function() {
+      if (this.done) {
+         this.$refs['done'].open();
+      }
+    }
   }
 }
 </script>
 
 <style>
-.add-files {
+.add-files {}
 
-}
-
-.add-files:hover {
-}
+.add-files:hover {}
 
 .add-files i {
 }

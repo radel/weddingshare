@@ -1,4 +1,5 @@
 var express = require('express');
+var compression = require('compression')
 var app = express();
 var cors = require('cors')
 var path = require('path');
@@ -6,9 +7,20 @@ var formidable = require('formidable');
 var fs = require('fs');
 var morgan = require('morgan');
 
+app.use(compression({filter: shouldCompress}))
 app.use(express.static(path.join(__dirname, '/views/dist/')));
 app.use(cors());
- app.use(morgan('combined'));
+app.use(morgan('combined'));
+
+function shouldCompress (req, res) {
+  if (req.headers['x-no-compression']) {
+    // don't compress responses with this request header
+    return false
+  }
+
+  // fallback to standard filter function
+  return compression.filter(req, res)
+}
 app.get('/', function(req, res){
   res.sendFile(path.join(__dirname, 'views/dist/index.html'));
 });

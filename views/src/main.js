@@ -5,12 +5,17 @@ import VueRouter from 'vue-router'
 import App from './App'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.css'
-import 'font-awesome/css/font-awesome.css'
+// import 'font-awesome/css/font-awesome.css'
 
 Vue.use(VueRouter)
 
 Vue.use(VueMaterial)
-
+Vue.material.registerTheme('default', {
+  primary: 'red',
+  accent: 'blue',
+  warn: 'red',
+  background: 'white'
+})
 Vue.config.productionTip = false
 
 new Vue({
