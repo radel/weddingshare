@@ -2,16 +2,20 @@
   <div id="app">
 
     <md-toolbar>
-      <md-button class="md-icon-button">
-        <md-icon>menu</md-icon>
-      </md-button>
 
       <h2 class="md-title" style="flex: 1">WeddingShare</h2>
 
-      <md-button class="md-icon-button">
+      <md-button class="md-icon-button" @click="openCredits()">
         <md-icon>favorite</md-icon>
       </md-button>
     </md-toolbar>
+
+
+    <md-dialog-alert
+      md-content="Grazie per aver condiviso con noi questa giornata! "
+        ref="credits">
+  </md-dialog-alert>
+
 
     <md-dialog-alert
       md-content="tutti i file sono stati caricati!"
@@ -119,6 +123,9 @@ export default {
         this.queued = 0;
       }
     },
+    openCredits() {
+      this.$refs['credits'].open()
+    }
   },
   watch: {
     'done' : function() {
