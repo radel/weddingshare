@@ -36,17 +36,17 @@ fs.readdir(path.join(__dirname, '/uploads'), (err, files) => {
   });
 })
 }
-
 app.get('/slideshow', function(req,res) {
     if (queue.length == 0) {
       fill(queue);
-    }
-    var file = '/views/dist/public/no-file.png'; 
-    if (queue) {
+		  var nofile = '/views/dist/static/img/no-file.png'; 
+	    res.sendFile(path.join(__dirname,nofile))
+    } else {
       file = '/uploads/'+queue.pop();
-      console.log(file)
+      res.sendFile(path.join(__dirname, file));
     }
-    res.sendFile(path.join(__dirname, file));
+	}
+    
 });
 
 app.post('/upload', function(req, res){

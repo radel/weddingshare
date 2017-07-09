@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <img :src="slide">
+    <div class="slide-container">
+      <img :src="slide">
+    </div>
   </div>
 </template>
 
@@ -20,7 +22,7 @@ export default {
     setInterval(function () {
       this.slide = '/slideshow?'+counter
       counter++;
-    }.bind(this), 4000);
+    }.bind(this), 6000);
   },
 }
 </script>
@@ -59,5 +61,19 @@ header span {
   font-weight: 400;
   box-sizing: border-box;
   padding-top: 16px;
+}
+
+.slide-container {
+  height: 100vh;
+  width: 100vw;
+  background: #333333 url('/static/img/bg.png') center center no-repeat;
+  text-align: center;
+}
+
+.slide-container img {
+  max-height: calc(100% - 20px);
+  box-shadow: 0 0 3rem rgba(0,0,0,.5);
+  border-radius: 3px;
+  margin: 10px;
 }
 </style>
