@@ -6,6 +6,7 @@ var path = require('path');
 var formidable = require('formidable');
 var fs = require('fs');
 var morgan = require('morgan');
+var port = process.env.PORT || 3000
 
 app.use(compression({filter: shouldCompress}))
 app.use(express.static(path.join(__dirname, '/views/dist/')));
@@ -81,6 +82,6 @@ app.post('/upload', function(req, res){
 
 });
 
-var server = app.listen(3000, function(){
-  console.log('Server listening on port 3000');
+var server = app.listen(port, function(){
+  console.log(`Server listening on port ${port}`);
 });

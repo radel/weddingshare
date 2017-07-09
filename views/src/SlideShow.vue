@@ -18,7 +18,7 @@ export default {
   created() {
       var counter = 500;
     setInterval(function () {
-      this.slide = 'http://localhost:3000/slideshow?'+counter
+      this.slide = '/slideshow?'+counter
       counter++;
     }.bind(this), 4000);
   },
