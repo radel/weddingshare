@@ -44,9 +44,7 @@ app.get('/slideshow', function(req,res) {
     } else {
       file = '/uploads/'+queue.pop();
       res.sendFile(path.join(__dirname, file));
-    }
-	}
-    
+    }    
 });
 
 app.post('/upload', function(req, res){
