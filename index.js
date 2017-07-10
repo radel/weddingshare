@@ -4,16 +4,17 @@ var app = express();
 var cors = require('cors')
 var path = require('path');
 var formidable = require('formidable');
+var Jimp = require("jimp");
 var fs = require('fs');
 var morgan = require('morgan');
 var port = process.env.PORT || 3000
 
-app.use(compression({filter: shouldCompress}))
+app.use(compression({ filter: shouldCompress }))
 app.use(express.static(path.join(__dirname, '/views/dist/')));
 app.use(cors());
 app.use(morgan('combined'));
 
-function shouldCompress (req, res) {
+function shouldCompress(req, res) {
   if (req.headers['x-no-compression']) {
     // don't compress responses with this request header
     return false
@@ -22,7 +23,7 @@ function shouldCompress (req, res) {
   // fallback to standard filter function
   return compression.filter(req, res)
 }
-app.get('/', function(req, res){
+app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'views/dist/index.html'));
 });
 
@@ -30,24 +31,44 @@ var queue = [];
 fill(queue);
 
 function fill(collection) {
-fs.readdir(path.join(__dirname, '/uploads'), (err, files) => {
-  files.forEach(file => {
-    collection.push(file);
-  });
-})
+  fs.readdir(path.join(__dirname, '/uploads'), (err, files) => {
+    files.forEach(file => {
+      collection.push(file);
+    });
+  })
 }
-app.get('/slideshow', function(req,res) {
-    if (queue.length == 0) {
-      fill(queue);
-		  var nofile = '/views/dist/static/img/no-file.png'; 
-	    res.sendFile(path.join(__dirname,nofile))
-    } else {
-      file = '/uploads/'+queue.pop();
-      res.sendFile(path.join(__dirname, file));
-    }    
+app.get('/slideshow', function(req, res) {
+  if (queue.length == 0) {
+    fill(queue);
+    var nofile = '/views/dist/static/img/no-file.png';
+    res.sendFile(path.join(__dirname, nofile))
+  } else {
+    file = '/thumbs/' + queue.pop();
+    res.sendFile(path.join(__dirname, file));
+  }
 });
 
-app.post('/upload', function(req, res){
+app.get('/photos', function(req, res) {
+  fs.readdir(path.join(__dirname, '/thumbs'), (err, files) => {
+    res.send(files);
+  })
+});
+
+app.get('/photos/:name', function(req, res) {
+  res.sendFile(path.join(__dirname, 'thumbs/' + req.params.name));
+});
+
+app.delete('/photos/:name', function(req, res) {
+  fs.unlink(path.join(__dirname, 'thumbs/' + req.params.name), function(err) {
+    if (err) res.send(err);
+    else {
+      res.send(true);
+    }
+  });
+});
+
+
+app.post('/upload', function(req, res) {
 
   // create an incoming form object
   var form = new formidable.IncomingForm();
@@ -61,8 +82,14 @@ app.post('/upload', function(req, res){
   // every time a file has been uploaded successfully,
   // rename it to it's orignal name
   form.on('file', function(field, file) {
-    fs.rename(file.path, path.join(form.uploadDir, file.name));
-    queue.push(file.name);
+    let name = new Date().toISOString('F').slice(0, 10) + '_' + file.name
+    fs.rename(file.path, path.join(form.uploadDir, name));
+    Jimp.read(path.join(form.uploadDir, name), function(err, image) {
+      if (err) throw err;
+      image.resize(1920, Jimp.AUTO) // resize
+        .write(path.join(__dirname, 'thumbs/' + name)); // save
+    });
+    queue.push(name);
   });
 
   // log any errors that occur
@@ -80,6 +107,6 @@ app.post('/upload', function(req, res){
 
 });
 
-var server = app.listen(port, function(){
+var server = app.listen(port, function() {
   console.log(`Server listening on port ${port}`);
 });

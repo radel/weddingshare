@@ -10,25 +10,20 @@
       </md-button>
     </md-toolbar>
 
+    <md-dialog-alert md-content="Grazie per aver condiviso con noi questa giornata! " ref="credits">
+    </md-dialog-alert>
 
-    <md-dialog-alert
-      md-content="Grazie per aver condiviso con noi questa giornata! "
-        ref="credits">
-  </md-dialog-alert>
-
-
-    <md-dialog-alert
-      md-content="tutti i file sono stati caricati!"
-        ref="done">
-  </md-dialog-alert>
+    <md-dialog-alert md-content="tutti i file sono stati caricati!" ref="done">
+    </md-dialog-alert>
 
     <md-list v-show="queued > 0 && !done || processing">
       <md-list-item>
-          <span><strong>{{queued}}</strong> foto sono pronte per essere inviate</span>
-        <md-button @click="send()" class="md-raised md-primary"><md-icon>send</md-icon> invia</md-button>
+        <span>
+          <strong>{{queued}}</strong> foto sono pronte per essere inviate</span>
+        <md-button @click="send()" class="md-raised md-primary">
+          <md-icon>send</md-icon> invia</md-button>
       </md-list-item>
     </md-list>
-
 
     <md-whiteframe>
       <md-progress v-show="processing" :md-progress="progress"></md-progress>
@@ -128,9 +123,9 @@ export default {
     }
   },
   watch: {
-    'done' : function() {
+    'done': function () {
       if (this.done) {
-         this.$refs['done'].open();
+        this.$refs['done'].open();
       }
     }
   }
@@ -142,8 +137,7 @@ export default {
 
 .add-files:hover {}
 
-.add-files i {
-}
+.add-files i {}
 
 .vue-dropzone {
   min-height: 80vh;

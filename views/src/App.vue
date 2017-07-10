@@ -7,11 +7,13 @@
 <script>
 import Upload from './Upload'
 import slideshow from './SlideShow'
+import photos from './Photos'
 import VueRouter from 'vue-router'
 
 const routes = [
   { path: '/', component: Upload },
   { path: '/play', component: slideshow },
+  { path: '/photos', component: photos},
 ]
 
 // 3. Create the router instance and pass the `routes` option
