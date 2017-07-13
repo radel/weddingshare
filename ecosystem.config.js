@@ -10,9 +10,11 @@ module.exports = {
       name      : 'Wedding Share',
       script    : 'index.js',
       env: {
-        PORT: '80'
+        PORT: '3000',
+        NODE_ENV: 'development'
       },
       env_production : {
+        PORT: '80',
         NODE_ENV: 'production'
       }
     },
