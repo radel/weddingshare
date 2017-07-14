@@ -29,7 +29,7 @@
       <md-progress v-show="processing" :md-progress="progress"></md-progress>
     </md-whiteframe>
 
-    <dropzone ref="drop" :language="language" :maxNumberOfFiles="10" :autoProcessQueue="false" v-on:vdropzone-total-upload-progress="updateProgress($event, progress)" v-on:vdropzone-files-added="updateQueue()" v-on:vdropzone-queue-complete="showSuccess()" :useCustomDropzoneOptions="true" :dropzoneOptions="options" id="weddingShare" :url="url" :maxFileSizeInMB="5" :useFontAwesome=true v-on:vdropzone-success="showSuccess">
+    <dropzone ref="drop" :language="language" :maxNumberOfFiles="10" :autoProcessQueue="false" v-on:vdropzone-total-upload-progress="updateProgress($event, progress)" v-on:vdropzone-files-added="updateQueue()" v-on:vdropzone-queue-complete="showSuccess()" :useCustomDropzoneOptions="true" :dropzoneOptions="options" id="weddingShare" :url="url" :maxFileSizeInMB="6" :useFontAwesome=true v-on:vdropzone-success="showSuccess">
 
       <input type="hidden" name="token" value="ok">
     </dropzone>
@@ -59,9 +59,9 @@ export default {
         "clickable": '.add-files'
       },
       language: {
-        dictFileTooBig: "File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.",
-        dictDefaultMessage: "<br>Premi il bottone in basso a destra per aggiungere le tue fotografie! Non più di 10 alla volta",
-        dictCancelUploadConfirmation: "Are you sure you want to cancel this upload?",
+        dictFileTooBig: "il file è troppo pesante ({fileize}}MiB). Max filesize: {{maxFilesize}}MiB.",
+        dictDefaultMessage: "<br>Premi il bottone in basso a destra per aggiungere le tue fotografie! Non più di 10 alla volta, max 5MB a foto.",
+        dictCancelUploadConfirmation: "vuoi annullare il caricamento",
         dictCancelUpload: "Annulla il caricamento",
         dictFallbackMessage: "Your browser does not support drag and drop file uploads.",
         dictFallbackText: "Please use the fallback form below to upload your files like in the olden days.",
@@ -69,7 +69,7 @@ export default {
         dictMaxFilesExceeded: "You can not upload any more files. (max: {{maxFiles}})",
         dictRemoveFile: "Rimuovi",
         dictRemoveFileConfirmation: null,
-        dictResponseError: "Server responded with {{statusCode}} code.",
+        dictResponseError: "Errore: {{statusCode}} code.",
       }
     }
   },
